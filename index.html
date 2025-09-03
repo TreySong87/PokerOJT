@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신입사원 OJT: 포커의 모든 것</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate & Amber -->
+    <!-- Application Structure Plan: A single-page, vertically scrolling application with a fixed top navigation bar. This structure provides a clear, linear learning path for new employees, guiding them from foundational concepts (Dopamine) to specific game rules (Texas Hold'em) and finally to the modern understanding of poker as a skill game. Key interactions include a dynamic chart and visual storytelling elements like the timeline. This was chosen for its intuitive, story-telling flow. -->
+    <!-- Visualization & Content Choices: 
+        1. Dopamine Ranking -> Goal: Inform & Impact -> Viz: Horizontal Bar Chart -> Interaction: Hover for details -> Justification: Visually demonstrates the high impact of gambling relative to other activities. Library: Chart.js.
+        2. Poker's Dopamine Triggers -> Goal: Explain -> Presentation: 3-column card layout with images -> Justification: Clearly separates the three core psychological drivers. Method: HTML/CSS.
+        3. Poker Game Types -> Goal: Organize & Inform -> Presentation: Static vertical list -> Justification: Presents information directly for non-interactive formats like PDF. Method: HTML/CSS.
+        4. Hold'em History -> Goal: Explain Evolution -> Presentation: Vertical Timeline -> Justification: Shows the chronological progression of how Hold'em became dominant. Method: HTML/CSS.
+        5. Skill vs. Luck -> Goal: Persuade & Inform -> Presentation: Story-driven content blocks with icons/images -> Justification: Convinces the user of poker's skill-based nature through narrative evidence. Method: HTML/CSS.
+        6. How to Enjoy Poker -> Goal: Advise & Guide -> Presentation: Multi-part section with icon-driven cards -> Justification: Provides actionable advice for responsible gaming in a clear, engaging format. Method: HTML/CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #111827;
+            color: #E5E7EB;
+        }
+        .nav-link.active {
+            color: #FBBF24;
+            border-bottom-color: #FBBF24;
+        }
+        .chart-container {
+            position: relative;
+            height: 60vh;
+            width: 100%;
+            max-height: 500px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #FBBF24;
+            border: 4px solid #374151;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <header id="header" class="bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50 transition-all duration-300 shadow-lg shadow-black/20">
+        <div class="container mx-auto px-4">
+            <nav class="flex justify-between items-center py-4">
+                <a href="#" class="text-2xl font-black text-amber-400">POKER OJT</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#dopamine" class="nav-link text-lg font-bold border-b-2 border-transparent hover:text-amber-400 transition-colors duration-300">도파민의 마법</a>
+                    <a href="#why-poker" class="nav-link text-lg font-bold border-b-2 border-transparent hover:text-amber-400 transition-colors duration-300">왜 포커인가?</a>
+                    <a href="#poker-world" class="nav-link text-lg font-bold border-b-2 border-transparent hover:text-amber-400 transition-colors duration-300">포커의 세계</a>
+                    <a href="#why-main-event" class="nav-link text-lg font-bold border-b-2 border-transparent hover:text-amber-400 transition-colors duration-300">홀덤, 왕이 되다</a>
+                    <a href="#skill-game" class="nav-link text-lg font-bold border-b-2 border-transparent hover:text-amber-400 transition-colors duration-300">포커, 운빨게임?</a>
+                    <a href="#enjoy-poker" class="nav-link text-lg font-bold border-b-2 border-transparent hover:text-amber-400 transition-colors duration-300">즐기는 법</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden text-2xl">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900">
+            <a href="#dopamine" class="block text-center py-3 text-lg font-bold hover:bg-gray-800 transition">도파민의 마법</a>
+            <a href="#why-poker" class="block text-center py-3 text-lg font-bold hover:bg-gray-800 transition">왜 포커인가?</a>
+            <a href="#poker-world" class="block text-center py-3 text-lg font-bold hover:bg-gray-800 transition">포커의 세계</a>
+            <a href="#why-main-event" class="block text-center py-3 text-lg font-bold hover:bg-gray-800 transition">홀덤, 왕이 되다</a>
+            <a href="#skill-game" class="block text-center py-3 text-lg font-bold hover:bg-gray-800 transition">포커, 운빨게임?</a>
+            <a href="#enjoy-poker" class="block text-center py-3 text-lg font-bold hover:bg-gray-800 transition">즐기는 법</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="dopamine" class="py-20 md:py-32">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl md:text-6xl font-black text-amber-400">도파민의 마법</h2>
+                <p class="mt-4 text-xl md:text-2xl max-w-3xl mx-auto">인간의 뇌를 지배하는 강력한 동기 부여 엔진, 그 중심에는 '도파민'이 있습니다.</p>
+                <div class="mt-12 md:mt-16 text-left max-w-3xl mx-auto">
+                    <div class="mb-8 rounded-lg overflow-hidden shadow-lg">
+                        <img src="https://github.com/TreySong87/PokerOJT/blob/16a6572339522bd58f5ff201bc2ebb0a7948fadd/dopa.png?raw=true" alt="도파민의 작용 방식" class="w-full h-auto object-cover">
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-4">'도파민 = 쾌락'은 가장 큰 오해입니다</h3>
+                    <p class="text-lg leading-relaxed">
+                        신경과학자 탈리아 러너 교수에 따르면, 도파민은 쾌락 그 자체가 아니라 <span class="font-bold text-amber-400">'보상을 예측하고 학습'</span>하게 만드는 강화 학습의 핵심 물질입니다. 즉, 특정 행동이 보상으로 이어질 가능성을 뇌에 알려주는 '신호등'과 같습니다.
+                    </p>
+                    <p class="text-lg leading-relaxed mt-4">
+                        SNS나 슬롯머신처럼 보상이 언제 나올지 <span class="font-bold text-amber-400">예측 불가능할 때</span> 도파민 시스템은 가장 강력하게 활성화됩니다. 도파민은 보상 자체보다 <span class="font-bold text-amber-400">'보상을 얻기 위한 행동'</span>(스크롤, 베팅)을 반복하도록 동기를 부여합니다. 결국 도파민은 우리를 행동하게 만드는 강력한 <span class="font-bold text-amber-400">'기대'와 '동기'</span>의 엔진입니다.
+                    </p>
+                </div>
+                <div class="mt-16 bg-gray-800 p-4 sm:p-8 rounded-2xl shadow-2xl max-w-5xl mx-auto">
+                    <h3 class="text-2xl font-bold mb-4">인간이 도파민을 가장 많이 느끼는 순간 (기준치 대비 도파민 분비량 증가율)</h3>
+                    <div class="chart-container">
+                        <canvas id="dopamineChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-gray-400 text-sm">* 위 수치는 과학적 연구 자료를 바탕으로 재구성한 상대적 비교 예시이며, 실제 분비량은 개인과 상황에 따라 달라질 수 있습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-poker" class="py-20 md:py-32 bg-gray-800">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl font-black text-white">왜 우리는 포커에 끌리는가?</h2>
+                    <p class="mt-4 text-xl md:text-2xl max-w-3xl mx-auto">포커는 이 강력한 도파민 시스템을 가장 정교하게 자극하도록 설계된 게임입니다.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 md:gap-12">
+                    <div class="bg-gray-900 p-8 rounded-2xl shadow-lg text-center transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="h-48 rounded-lg overflow-hidden mb-6">
+                             <img src="https://github.com/TreySong87/PokerOJT/blob/main/111.png?raw=true" alt="불확실한 보상" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">1. 불확실한 보상</h3>
+                        <p class="text-gray-300 leading-relaxed">어떤 카드가 나올지, 상대의 전략은 무엇일지 예측할 수 없는 매 순간이 뇌에 강렬한 자극을 줍니다. 그리고 마침내 찾아오는 승리의 짜릿함은 뇌에 강력한 보상으로 각인됩니다.</p>
+                    </div>
+                    <div class="bg-gray-900 p-8 rounded-2xl shadow-lg text-center transform hover:-translate-y-2 transition-transform duration-300">
+                         <div class="h-48 rounded-lg overflow-hidden mb-6">
+                             <img src="https://github.com/TreySong87/PokerOJT/blob/main/2.png?raw=true" alt="거의 이길 뻔한 순간" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">2. '거의 이길 뻔한' 순간</h3>
+                        <p class="text-gray-300 leading-relaxed">아쉽게 패배하는 경험은 실제 승리했을 때와 유사한 도파민을 분비시켜, "다음엔 이길 수 있다"는 강한 동기를 부여하고 더 큰 몰입감을 만들어냅니다.</p>
+                    </div>
+                     <div class="bg-gray-900 p-8 rounded-2xl shadow-lg text-center transform hover:-translate-y-2 transition-transform duration-300">
+                         <div class="h-48 rounded-lg overflow-hidden mb-6">
+                            <img src="https://github.com/TreySong87/PokerOJT/blob/main/espen%20jorstard.jpg?raw=true" alt="사회적 보상" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-2xl font-bold text-amber-400 mb-2">3. 사회적 보상</h3>
+                        <p class="text-gray-300 leading-relaxed">수많은 경쟁자를 꺾고 챔피언이 되는 순간의 쾌감은 금전적 보상을 넘어섭니다. 사회적 인정과 지위라는 보상은 무엇과도 바꿀 수 없는 강력한 동기입니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="poker-world" class="py-20 md:py-32">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl font-black text-amber-400">포커의 세계로</h2>
+                    <p class="mt-4 text-xl md:text-2xl max-w-3xl mx-auto">다양한 규칙과 전략이 존재하는 매력적인 포커의 종류를 알아봅니다.</p>
+                </div>
+                <div class="max-w-4xl mx-auto space-y-8">
+                    <div class="bg-gray-800 p-8 rounded-lg border-2 border-amber-400 shadow-lg">
+                        <h3 class="text-2xl font-bold mb-2">커뮤니티 카드 포커 (Community Card Poker) - <span class="text-amber-400">가장 대중적인 방식</span></h3>
+                        <p class="text-lg">모든 플레이어가 공유하는 '커뮤니티 카드(공통 카드)'와 자신이 가진 '개인 카드'를 조합하여 족보를 만드는 방식입니다. 현대 포커의 주류이며, 가장 대중적이고 전략의 깊이가 깊습니다.</p>
+                        <p class="mt-2 font-bold text-gray-300">대표 게임: 텍사스 홀덤, 오마하 홀덤</p>
+                    </div>
+                    <div class="bg-gray-800 p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold mb-2">드로우 포커 (Draw Poker)</h3>
+                        <p class="text-lg">각자 받은 카드를 보이지 않게 들고 있다가, 일부 카드를 버리고 새로운 카드로 교환하여 족보를 완성하는 가장 클래식한 방식입니다. 상대의 표정과 베팅 패턴만으로 모든 것을 추리해야 하는 심리전의 정수입니다.</p>
+                        <p class="mt-2 font-bold text-gray-300">대표 게임: 5-Card Draw (바둑이)</p>
+                    </div>
+                    <div class="bg-gray-800 p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold mb-2">스터드 포커 (Stud Poker)</h3>
+                        <p class="text-lg">처음 받는 몇 장의 카드를 제외하고, 나머지 카드를 모두가 볼 수 있게 오픈하면서 진행하는 방식입니다. 오픈된 카드를 통해 상대의 패를 예측하고 수 싸움을 벌이는 전략적인 재미가 특징입니다.</p>
+                        <p class="mt-2 font-bold text-gray-300">대표 게임: 7-Card Stud</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="why-main-event" class="py-20 md:py-32 bg-gray-800">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl font-black text-white">홀덤, 포커의 왕이 되다</h2>
+                    <p class="mt-4 text-xl md:text-2xl max-w-3xl mx-auto">어떻게 텍사스 홀덤은 세계 챔피언을 가리는 기준이 되었을까요?</p>
+                </div>
+
+                <div class="relative max-w-4xl mx-auto pl-10">
+                    <div class="absolute left-0 h-full w-1 bg-gray-700"></div>
+                    
+                    <div class="relative pl-10 pb-12 timeline-item">
+                        <h3 class="text-2xl font-bold text-amber-400">1960년대: 텍사스의 바람이 베이거스로</h3>
+                        <p class="mt-2 text-lg">텍사스 출신 로드 갬블러들이 라스베이거스에 홀덤을 전파하기 시작합니다. 곧이어 홀덤은 '큰 판(Big Game)'을 대표하는 게임으로 자리 잡습니다.</p>
+                    </div>
+                    
+                    <div class="relative pl-10 pb-12 timeline-item">
+                        <h3 class="text-2xl font-bold text-amber-400">1970년: 밋밋했던 첫 WSOP</h3>
+                        <p class="mt-2 text-lg">제1회 World Series of Poker(WSOP)는 여러 캐시게임을 치른 후, 선수들의 투표로 '최고 선수'를 뽑는 방식이었습니다. 경쟁과 드라마가 부족해 흥행에 실패했다는 평가를 받습니다.</p>
+                    </div>
+
+                    <div class="relative pl-10 pb-12 timeline-item">
+                        <h3 class="text-2xl font-bold text-amber-400">1971년: 역사의 전환점</h3>
+                        <p class="mt-2 text-lg">언론인 <span class="font-bold text-white">테드 대크리 Jr.</span>의 조언에 따라, WSOP는 한 명의 승자가 나올 때까지 진행되는 '토너먼트' 방식으로 전면 개편됩니다. 그리고 그 메인 이벤트 종목으로 <span class="font-bold text-white">노리밋 텍사스 홀덤(NLH)</span>이 채택됩니다.</p>
+                        <div class="mt-4 bg-gray-900 p-6 rounded-lg">
+                            <h4 class="font-bold text-xl">왜 하필 노리밋 홀덤이었을까?</h4>
+                            <ul class="list-disc list-inside mt-2 space-y-1 text-gray-300">
+                                <li><span class="font-bold text-amber-400">가장 극적인 게임:</span> 단 두 장의 카드로 모든 칩을 거는 '올인'은 챔피언 결정전에 가장 어울리는 드라마를 선사했습니다.</li>
+                                <li><span class="font-bold text-amber-400">관전과 운영의 효율:</span> 딜링이 빠르고 간결해 관중과 언론의 주목을 끌기 용이했습니다.</li>
+                                <li><span class="font-bold text-amber-400">현장의 인기:</span> 이미 베이거스 고액 게임에서는 홀덤이 대세였습니다.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-10 timeline-item">
+                        <h3 class="text-2xl font-bold text-amber-400">1972년 ~ 현재: 전통의 고착</h3>
+                        <p class="mt-2 text-lg">WSOP 메인 이벤트 바이인(참가비)이 상징적인 금액인 <span class="font-bold text-white">$10,000</span>로 고정됩니다. 이로써 "세계 포커 챔피언은 노리밋 텍사스 홀덤으로 결정한다"는 전통이 확고하게 자리 잡게 됩니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skill-game" class="py-20 md:py-32">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl font-black text-amber-400">포커? 운빨게임 아니야?</h2>
+                    <p class="mt-4 text-xl md:text-2xl max-w-3xl mx-auto">많은 사람들이 묻습니다. 하지만 현대 포커는 과학과 전략이 지배하는 치열한 마인드스포츠로 진화했습니다.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto space-y-16">
+                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12 text-center md:text-left">
+                        <div class="w-full md:w-1/3 text-6xl text-amber-400"><i class="fas fa-robot"></i></div>
+                        <div class="w-full md:w-2/3">
+                            <h3 class="text-3xl font-bold">증거 1: 인공지능이 증명한 실력</h3>
+                            <p class="mt-4 text-lg leading-relaxed">2017년, '리브라투스'라는 AI가 세계 최정상급 프로 4명을 12만 핸드의 1대1 대결에서 압도적으로 격파했습니다. 이는 장기적으로 <span class="font-bold text-white">운이 상쇄되고 오직 전략의 품질이 승패를 가른다</span>는 강력한 증거입니다. 2019년에는 여러 명이 동시에 플레이하는 게임에서도 AI '플루리부스'가 인간을 이겼습니다.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12 text-center md:text-right">
+                        <div class="w-full md:w-1/3 text-6xl text-amber-400"><i class="fas fa-brain"></i></div>
+                        <div class="w-full md:w-2/3">
+                            <h3 class="text-3xl font-bold">증거 2: GTO, 전략을 수학으로 만들다</h3>
+                            <p class="mt-4 text-lg leading-relaxed"><span class="font-bold text-white">GTO(게임 이론 최적 전략)</span>는 상대의 어떤 수에도 내 수익이 깎이지 않는, '파훼 불가능한' 완벽한 플레이의 기준점입니다. 2010년대 중반 이후 GTO 분석 프로그램(솔버)이 대중화되면서, 포커는 더 이상 감이나 경험에만 의존하는 게임이 아닌, <span class="font-bold text-white">누구나 학습하고 훈련할 수 있는 수학적 영역</span>이 되었습니다.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12 text-center md:text-left">
+                        <div class="w-full md:w-1/3 text-6xl text-amber-400"><i class="fas fa-medal"></i></div>
+                        <div class="w-full md:w-2/3">
+                            <h3 class="text-3xl font-bold">증거 3: 사회적, 제도적 인정</h3>
+                            <p class="mt-4 text-lg leading-relaxed">미국, 독일 등 주요 국가들은 이제 전업 포커 플레이어를 세법상 하나의 <span class="font-bold text-white">'직업'</span>으로 인정하고 있습니다. 그리고 2024년 11월, 마침내 국제 마인드스포츠 협회(IMSA)가 포커를 체스, 바둑과 같은 공식 <span class="font-bold text-white">'마인드스포츠'</span>로 인정하며 그 위상을 공인했습니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-20 pt-10 border-t border-gray-700 max-w-5xl mx-auto">
+                    <h3 class="text-3xl font-bold text-center text-amber-400 mb-8">그래서 ‘No Limit Hold'em (NLH)’가 메인으로 남는 구조적 이유</h3>
+                    <div class="grid md:grid-cols-3 gap-8 text-center">
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <div class="text-4xl text-amber-400 mb-4"><i class="fas fa-language"></i></div>
+                            <h4 class="text-xl font-bold">학습·콘텐츠·중계의 표준</h4>
+                            <p class="mt-2 text-gray-300">모든 교육 자료와 중계 시스템이 홀덤을 기준으로 만들어져, 선수와 팬들이 하나의 '공통 언어'로 소통하는 거대한 생태계가 구축되었습니다.</p>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <div class="text-4xl text-amber-400 mb-4"><i class="fas fa-cogs"></i></div>
+                            <h4 class="text-xl font-bold">최적화 연구의 집중</h4>
+                            <p class="mt-2 text-gray-300">AI와 게임 이론 같은 최첨단 연구가 홀덤을 무대로 이루어지면서, 다른 어떤 게임보다 빠르게 전략 수준이 상향되고 메타가 고도화되었습니다.</p>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <div class="text-4xl text-amber-400 mb-4"><i class="fas fa-sitemap"></i></div>
+                            <h4 class="text-xl font-bold">제도·산업 파이프라인</h4>
+                            <p class="mt-2 text-gray-300">마인드스포츠 지위, 직업으로서의 인정 등 제도적 기반 위에 투어, 스폰서, 콘텐츠 산업이 자리 잡으며 프로 선수가 될 수 있는 길이 넓어졌습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="enjoy-poker" class="py-20 md:py-32 bg-gray-900">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl font-black text-amber-400">포커게임을 즐기려면?</h2>
+                    <p class="mt-4 text-xl md:text-2xl max-w-3xl mx-auto">슬기로운 포커 생활 가이드: 승패를 넘어, 게임을 오랫동안 건강하게 즐기기 위한 핵심 원칙입니다.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto mb-20 bg-gray-800 p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-3xl font-bold text-center text-white mb-8">1. 가장 중요한 첫걸음: 올바른 마인드셋</h3>
+                    <div class="my-8 max-w-sm mx-auto">
+                        <img src="https://github.com/TreySong87/PokerOJT/blob/main/Mastero-Mindset-Logo.png?raw=true" alt="올바른 마인드셋 로고" class="w-full h-auto rounded-lg">
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4 p-4 bg-gray-900 rounded-lg">
+                            <i class="fas fa-dice-d20 text-3xl text-amber-400 mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-xl text-amber-400">포커의 본질을 기억하세요</h4>
+                                <p class="text-gray-300">포커가 아무리 마인드 스포츠라도, 그 근본은 '갬블'임을 잊지 마세요. 이 사실을 인정하는 것에서 건강한 즐거움이 시작됩니다.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 bg-gray-900 rounded-lg">
+                             <i class="fas fa-exclamation-triangle text-3xl text-amber-400 mt-1"></i>
+                             <div>
+                                <h4 class="font-bold text-xl text-amber-400">항상 경각심을 가지세요</h4>
+                                <p class="text-gray-300">'이번 한 판만', '딴 돈으로만' 같은 생각은 위험 신호입니다. 정해진 예산과 시간을 철저히 지키고, 감정에 휘둘린 베팅은 절대 금물입니다.</p>
+                            </div>
+                        </div>
+                         <div class="flex items-start gap-4 p-4 bg-gray-900 rounded-lg">
+                             <i class="fas fa-skull-crossbones text-3xl text-amber-400 mt-1"></i>
+                             <div>
+                                <h4 class="font-bold text-xl text-amber-400">도박 중독은 파멸의 길입니다</h4>
+                                <p class="text-gray-300">즐거움으로 시작한 게임이 통제 불능이 되면, 나 자신뿐만 아니라 주변 모두를 파멸로 이끌 수 있습니다. 스스로 절제하는 습관이 가장 중요합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="max-w-4xl mx-auto">
+                     <h3 class="text-3xl font-bold text-center text-white mb-12">2. 그래서, 어디서 즐겨야 할까요?</h3>
+                     <div class="space-y-12">
+                         <div class="bg-gray-800 p-8 rounded-2xl shadow-lg text-center">
+                             <h4 class="text-2xl font-bold mb-4">동네 합법 홀덤펍</h4>
+                             <div class="mb-4 rounded-lg overflow-hidden max-w-lg mx-auto">
+                                <img src="https://github.com/TreySong87/PokerOJT/blob/main/final%20nine.png?raw=true" alt="파이널나인 홀덤펍" class="w-full h-auto object-cover">
+                             </div>
+                             <p class="text-gray-300">소액 참가비로 음료와 함께 즐기는 사교의 장. 실제 칩과 카드로 사람들과 교류하며 포커의 진짜 재미를 느끼기에 최적의 장소입니다.</p>
+                         </div>
+                         <div class="bg-gray-800 p-8 rounded-2xl shadow-lg text-center">
+                             <h4 class="text-2xl font-bold mb-4">합법 온라인 플랫폼</h4>
+                             <div class="mb-4 rounded-lg overflow-hidden max-w-lg mx-auto">
+                                <img src="https://github.com/TreySong87/PokerOJT/blob/main/WPL_.jpg?raw=true" alt="WPL 온라인 포커 플랫폼" class="w-full h-auto object-cover">
+                             </div>
+                             <p class="text-gray-300">시간과 장소에 구애받지 않고 가볍게 즐기고 싶다면? 충전 한도가 정해진 합법 플랫폼에서 과도한 지출 걱정 없이 안전하게 즐길 수 있습니다.</p>
+                         </div>
+                         <div class="bg-gray-800 p-8 rounded-2xl shadow-lg text-center">
+                              <h4 class="text-2xl font-bold mb-4">동료 및 지인들과 함께</h4>
+                             <div class="mb-4 rounded-lg overflow-hidden max-w-lg mx-auto">
+                                <img src="https://github.com/TreySong87/PokerOJT/blob/main/Home-Poker-Game.jpg?raw=true" alt="지인들과의 홈게임" class="w-full h-auto object-cover">
+                             </div>
+                             <p class="text-gray-300">가장 안전하고 즐거운 방법! 소소한 내기로 유대감을 쌓는 최고의 팀 빌딩 활동입니다. 승패를 넘어 순수한 게임의 재미에 집중할 수 있습니다.</p>
+                         </div>
+                     </div>
+                </div>
+                
+                 <div class="mt-20 pt-10 border-t border-gray-700 text-center max-w-4xl mx-auto">
+                     <p class="text-2xl md:text-3xl font-bold leading-relaxed text-amber-400">
+                        포커는 '얼마를 땄는가'가 아니라 '어떻게 즐겼는가'가 중요합니다.
+                     </p>
+                     <p class="mt-4 text-xl text-gray-300">항상 책임감을 가지고 정해진 선을 넘지 않을 때, 포커는 최고의 취미가 될 수 있습니다.</p>
+                </div>
+                
+                <div class="mt-20 pt-10 border-t-4 border-dashed border-amber-500/50 text-center max-w-4xl mx-auto">
+                    <h3 class="text-3xl font-bold text-white">포커가 어렵나요? <span class="text-amber-400">전문가에게 물어보세요!</span></h3>
+                    <p class="mt-4 text-lg max-w-2xl mx-auto">포커는 혼자 끙끙 앓을수록 스트레스만 쌓입니다. 함께 할수록 실력이 늘고, 더 즐거워집니다.</p>
+                    
+                    <div class="mt-8 bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded-lg relative max-w-2xl mx-auto" role="alert">
+                      <p><strong class="font-bold">※ 경고: 전문가 주의보 ※</strong></p>
+                      <p class="mt-2">여기 소개된 분들의 뇌는 이미 도파민에 절여져 망가질 대로 망가져 있습니다.<br>바로 그 때문에, 당신의 소중한 도파민을 조절하는 최고의 방법을 알려줄 수 있는 유일한 사람들입니다.<br>그들의 영광스러운 폐허에서 교훈을 얻어 가세요!</p>
+                    </div>
+
+                    <div class="mt-12 text-left">
+                        <h4 class="text-2xl font-bold text-center text-amber-400 mb-8">GGP 최고의 포커 선생님들을 소개합니다</h4>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="bg-gray-800 p-6 rounded-lg flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
+                                <img src="https://github.com/TreySong87/PokerOJT/blob/main/Junchoi_halo_behind_strong.png?raw=true" alt="Jun. Choi" class="w-24 h-24 rounded-full object-cover border-4 border-amber-400 flex-shrink-0">
+                                <div>
+                                    <h5 class="font-bold text-xl">Jun.Choi - <span class="text-amber-400">GGP의 정신적 지주</span></h5>
+                                    <p class="mt-1 text-gray-300">그에게서는 포커에 대한 모든 조언을 들을 수 있습니다. 매우 친절하기까지 한 최고의 전문가입니다.</p>
+                                </div>
+                            </div>
+                            <div class="bg-gray-800 p-6 rounded-lg flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
+                                 <img src="https://github.com/TreySong87/PokerOJT/blob/main/trey.jpg?raw=true" alt="Trey.Song" class="w-24 h-24 rounded-full object-cover border-4 border-amber-400 flex-shrink-0">
+                                <div>
+                                    <h5 class="font-bold text-xl">Trey.Song - <span class="text-amber-400">마인드셋 코치</span></h5>
+                                    <p class="mt-1 text-gray-300">취미를 넘어, 보다 진지한 포커 플레이어로 거듭나고 싶다면 트레이를 찾아가세요. 당신의 마인드셋과 전략을 모두 바꿔드립니다.</p>
+                                </div>
+                            </div>
+                             <div class="bg-gray-800 p-6 rounded-lg flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
+                                <img src="https://github.com/TreySong87/PokerOJT/blob/main/richie.jpg?raw=true" alt="Richie.kim" class="w-24 h-24 rounded-full object-cover border-4 border-amber-400 flex-shrink-0">
+                                <div>
+                                    <h5 class="font-bold text-xl">Richie.Kim - <span class="text-amber-400">토너먼트 네비게이터</span></h5>
+                                    <p class="mt-1 text-gray-300">복잡한 포커 토너먼트의 세계, 리치와 함께라면 두렵지 않습니다. 이 젊은 청년은 주요 대회 특징부터 주요 선수까지 모두 꿰차고 있습니다.</p>
+                                </div>
+                            </div>
+                             <div class="bg-gray-800 p-6 rounded-lg flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
+                                <img src="https://github.com/TreySong87/PokerOJT/blob/main/zed.jpg?raw=true" alt="Zed.Lee" class="w-24 h-24 rounded-full object-cover border-4 border-amber-400 flex-shrink-0">
+                                <div>
+                                    <h5 class="font-bold text-xl">Zed.Lee - <span class="text-amber-400">커뮤니티 & 레크펍 전문가</span></h5>
+                                    <p class="mt-1 text-gray-300">오프라인 포커 커뮤니티와 홀덤펍을 200% 즐기는 비법이 궁금하다면? 정답은 제드에게 있습니다.</p>
+                                </div>
+                            </div>
+                            <div class="bg-gray-800 p-6 rounded-lg flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left md:col-span-2 md:max-w-xl md:mx-auto w-full">
+                                <img src="https://github.com/TreySong87/PokerOJT/blob/main/mike.jpg?raw=true" alt="Mike.yoo" class="w-24 h-24 rounded-full object-cover border-4 border-amber-400 flex-shrink-0">
+                                <div>
+                                    <h5 class="font-bold text-xl">Mike.Yoo - <span class="text-amber-400">미국 현지 포커문화 특파원</span></h5>
+                                    <p class="mt-1 text-gray-300">라스베가스의 생생한 포커 문화와 테이블에서 자연스럽게 코 파는(?) 미묘한 기술이 궁금하다면 마이크를 찾아가세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-gray-900 border-t border-gray-800 py-8">
+        <div class="container mx-auto px-4 text-center text-gray-400">
+            <p>&copy; 2025 World's No.1 Poker Platform. All Rights Reserved.</p>
+            <p class="mt-2 text-sm">신입사원 여러분의 성공적인 여정을 응원합니다.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Dopamine Chart
+            const ctx = document.getElementById('dopamineChart').getContext('2d');
+            const dopamineLabels = ['맛있는 음식', '섹스', '운동', '니코틴', '알코올', '도박', '마약 (중독성 약물)'];
+            const dopamineData = [50, 100, 130, 150, 200, 450, 1000];
+            
+            const bgColors = dopamineLabels.map(label => label === '도박' ? 'rgba(239, 68, 68, 0.7)' : 'rgba(251, 191, 36, 0.6)');
+            const borderColors = dopamineLabels.map(label => label === '도박' ? 'rgba(239, 68, 68, 1)' : 'rgba(251, 191, 36, 1)');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dopamineLabels,
+                    datasets: [{
+                        label: '도파민 분비량 증가율 (%)',
+                        data: dopamineData,
+                        backgroundColor: bgColors,
+                        borderColor: borderColors,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#1F2937',
+                            titleFont: { size: 16 },
+                            bodyFont: { size: 14 },
+                            padding: 12,
+                            cornerRadius: 6
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#D1D5DB',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                             ticks: {
+                                color: '#D1D5DB',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Scrollspy for navigation
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    if (mobileMenu.classList.contains('hidden') === false) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
