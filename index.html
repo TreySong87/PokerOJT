@@ -11,12 +11,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Slate & Amber -->
-    <!-- Application Structure Plan: A single-page, vertically scrolling application with a fixed top navigation bar. This structure provides a clear, linear learning path for new employees, guiding them from foundational concepts (Dopamine) to specific game rules (Texas Hold'em) and finally to the modern understanding of poker as a skill game. Key interactions include a dynamic chart and visual storytelling elements like the timeline. This was chosen for its intuitive, story-telling flow. -->
+    <!-- Application Structure Plan: A single-page, vertically scrolling application with a fixed top navigation bar. This structure provides a clear, linear learning path for new employees, guiding them from foundational concepts (Dopamine), through the history and types of poker, into a detailed guide on how to play the main game (Texas Hold'em), and finally to the modern understanding of poker as a skill game and how to enjoy it responsibly. This was chosen for its intuitive, story-telling flow. -->
     <!-- Visualization & Content Choices: 
         1. Dopamine Ranking -> Goal: Inform & Impact -> Viz: Horizontal Bar Chart -> Interaction: Hover for details -> Justification: Visually demonstrates the high impact of gambling relative to other activities. Library: Chart.js.
         2. Poker's Dopamine Triggers -> Goal: Explain -> Presentation: 3-column card layout with images -> Justification: Clearly separates the three core psychological drivers. Method: HTML/CSS.
-        3. Poker Game Types -> Goal: Organize & Inform -> Presentation: Static vertical list -> Justification: Presents information directly for non-interactive formats like PDF. Method: HTML/CSS.
-        4. Hold'em History -> Goal: Explain Evolution -> Presentation: Vertical Timeline -> Justification: Shows the chronological progression of how Hold'em became dominant. Method: HTML/CSS.
+        3. Hold'em History -> Goal: Explain Evolution -> Presentation: Vertical Timeline -> Justification: Shows the chronological progression of how Hold'em became dominant. Method: HTML/CSS.
+        4. Hold'em Guide -> Goal: Educate & Instruct -> Presentation: Multi-part instructional layout with visual aids (cards, icons, diagrams) -> Justification: Provides a comprehensive, step-by-step guide for beginners, breaking down complex rules into digestible parts. Method: HTML/CSS.
         5. Skill vs. Luck -> Goal: Persuade & Inform -> Presentation: Story-driven content blocks with icons/images -> Justification: Convinces the user of poker's skill-based nature through narrative evidence. Method: HTML/CSS.
         6. How to Enjoy Poker -> Goal: Advise & Guide -> Presentation: Multi-part section with icon-driven cards -> Justification: Provides actionable advice for responsible gaming in a clear, engaging format. Method: HTML/CSS.
     -->
@@ -49,6 +49,29 @@
             background-color: #FBBF24;
             border: 4px solid #374151;
         }
+        .poker-card {
+            background-color: white;
+            color: black;
+            border-radius: 0.375rem;
+            border: 1px solid #4B5563;
+            width: 3.5rem;
+            height: 5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+        .poker-card .rank {
+            line-height: 1;
+        }
+        .poker-card .suit {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        .suit-red { color: #EF4444; }
+        .suit-black { color: #111827; }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -57,12 +80,12 @@
         <div class="container mx-auto px-4">
             <nav class="flex justify-between items-center py-4">
                 <a href="#" class="text-2xl font-black text-amber-400">POKER OJT</a>
-                <div class="hidden md:flex items-center space-x-8">
+                <div class="hidden md:flex items-center space-x-6">
                     <a href="#dopamine" class="nav-link text-lg font-bold border-b-2 border-transparent hover:text-amber-400 transition-colors duration-300">도파민의 마법</a>
-                    <a href="#why-poker" class="nav-link text-lg font-bold border-b-2 border-transparent hover:text-amber-400 transition-colors duration-300">왜 포커인가?</a>
                     <a href="#poker-world" class="nav-link text-lg font-bold border-b-2 border-transparent hover:text-amber-400 transition-colors duration-300">포커의 세계</a>
                     <a href="#why-main-event" class="nav-link text-lg font-bold border-b-2 border-transparent hover:text-amber-400 transition-colors duration-300">홀덤, 왕이 되다</a>
                     <a href="#skill-game" class="nav-link text-lg font-bold border-b-2 border-transparent hover:text-amber-400 transition-colors duration-300">포커, 운빨게임?</a>
+                    <a href="#holdem-guide" class="nav-link text-lg font-bold border-b-2 border-transparent hover:text-amber-400 transition-colors duration-300">홀덤 기초 가이드</a>
                     <a href="#enjoy-poker" class="nav-link text-lg font-bold border-b-2 border-transparent hover:text-amber-400 transition-colors duration-300">즐기는 법</a>
                 </div>
                 <button id="mobile-menu-button" class="md:hidden text-2xl">
@@ -72,10 +95,10 @@
         </div>
         <div id="mobile-menu" class="hidden md:hidden bg-gray-900">
             <a href="#dopamine" class="block text-center py-3 text-lg font-bold hover:bg-gray-800 transition">도파민의 마법</a>
-            <a href="#why-poker" class="block text-center py-3 text-lg font-bold hover:bg-gray-800 transition">왜 포커인가?</a>
             <a href="#poker-world" class="block text-center py-3 text-lg font-bold hover:bg-gray-800 transition">포커의 세계</a>
             <a href="#why-main-event" class="block text-center py-3 text-lg font-bold hover:bg-gray-800 transition">홀덤, 왕이 되다</a>
             <a href="#skill-game" class="block text-center py-3 text-lg font-bold hover:bg-gray-800 transition">포커, 운빨게임?</a>
+            <a href="#holdem-guide" class="block text-center py-3 text-lg font-bold hover:bg-gray-800 transition">홀덤 기초 가이드</a>
             <a href="#enjoy-poker" class="block text-center py-3 text-lg font-bold hover:bg-gray-800 transition">즐기는 법</a>
         </div>
     </header>
@@ -205,7 +228,7 @@
                 </div>
             </div>
         </section>
-
+        
         <section id="skill-game" class="py-20 md:py-32">
             <div class="container mx-auto px-4">
                 <div class="text-center mb-16">
@@ -256,6 +279,109 @@
                             <div class="text-4xl text-amber-400 mb-4"><i class="fas fa-sitemap"></i></div>
                             <h4 class="text-xl font-bold">제도·산업 파이프라인</h4>
                             <p class="mt-2 text-gray-300">마인드스포츠 지위, 직업으로서의 인정 등 제도적 기반 위에 투어, 스폰서, 콘텐츠 산업이 자리 잡으며 프로 선수가 될 수 있는 길이 넓어졌습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="holdem-guide" class="py-20 md:py-32 bg-gray-800">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl font-black text-white">텍사스홀덤 기초 가이드</h2>
+                    <p class="mt-4 text-xl md:text-2xl max-w-3xl mx-auto">이제 세계에서 가장 사랑받는 포커 게임, 텍사스 홀덤을 배워봅시다!</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto space-y-12">
+                    <div>
+                        <h3 class="text-3xl font-bold text-white mb-6 border-l-4 border-amber-400 pl-4">Part 1. 포커의 기본</h3>
+                        <div class="bg-gray-900 p-6 rounded-lg space-y-4">
+                            <p><strong class="text-amber-400 text-lg">카드:</strong> 조커를 제외한 52장을 사용합니다. (무늬: <span class="suit-black">♠</span>, <span class="suit-red">◆</span>, <span class="suit-red">♥</span>, <span class="suit-black">♣</span> / 숫자: A > K > Q > J > 10 ~ 2)</p>
+                            <p><strong class="text-amber-400 text-lg">무늬 서열:</strong> 텍사스 홀덤에서는 모든 무늬의 가치가 동일합니다. 무늬로 승패를 가르지 않습니다.</p>
+                            <p><strong class="text-amber-400 text-lg">게임 목표:</strong> 상대보다 높은 5장 카드 조합(족보)을 만들거나, 나를 제외한 모두를 포기(폴드)시켜 팟을 차지하는 것입니다.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-3xl font-bold text-white mb-6 border-l-4 border-amber-400 pl-4">Part 2. 포커 족보 (Hand Rankings)</h3>
+                        <div class="bg-gray-900 p-6 rounded-lg">
+                            <p class="mb-6 text-center text-lg">어떤 게임이든 최종 패는 오직 5장으로 결정됩니다. 높은 순서대로 기억하세요!</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-gray-800 p-4 rounded-lg"><h4 class="text-lg font-bold text-amber-400">1. 로얄 스트레이트 플러쉬</h4><p class="text-sm text-gray-400 mb-2">(같은 무늬 A-K-Q-J-10)</p><div class="flex space-x-1 justify-center"><div class="poker-card"><span class="rank suit-red">A</span><span class="suit suit-red">♥</span></div><div class="poker-card"><span class="rank suit-red">K</span><span class="suit suit-red">♥</span></div><div class="poker-card"><span class="rank suit-red">Q</span><span class="suit suit-red">♥</span></div><div class="poker-card"><span class="rank suit-red">J</span><span class="suit suit-red">♥</span></div><div class="poker-card"><span class="rank suit-red">10</span><span class="suit suit-red">♥</span></div></div></div>
+                                <div class="bg-gray-800 p-4 rounded-lg"><h4 class="text-lg font-bold">2. 스트레이트 플러쉬</h4><p class="text-sm text-gray-400 mb-2">(같은 무늬 + 연속된 숫자)</p><div class="flex space-x-1 justify-center"><div class="poker-card"><span class="rank suit-black">9</span><span class="suit suit-black">♠</span></div><div class="poker-card"><span class="rank suit-black">8</span><span class="suit suit-black">♠</span></div><div class="poker-card"><span class="rank suit-black">7</span><span class="suit suit-black">♠</span></div><div class="poker-card"><span class="rank suit-black">6</span><span class="suit suit-black">♠</span></div><div class="poker-card"><span class="rank suit-black">5</span><span class="suit suit-black">♠</span></div></div></div>
+                                <div class="bg-gray-800 p-4 rounded-lg"><h4 class="text-lg font-bold">3. 포카드</h4><p class="text-sm text-gray-400 mb-2">(같은 숫자 4장)</p><div class="flex space-x-1 justify-center"><div class="poker-card"><span class="rank suit-red">7</span><span class="suit suit-red">♥</span></div><div class="poker-card"><span class="rank suit-red">7</span><span class="suit suit-red">♦</span></div><div class="poker-card"><span class="rank suit-black">7</span><span class="suit suit-black">♠</span></div><div class="poker-card"><span class="rank suit-black">7</span><span class="suit suit-black">♣</span></div><div class="poker-card"><span class="rank suit-red">A</span><span class="suit suit-red">♦</span></div></div></div>
+                                <div class="bg-gray-800 p-4 rounded-lg"><h4 class="text-lg font-bold">4. 풀하우스</h4><p class="text-sm text-gray-400 mb-2">(트리플 + 원 페어)</p><div class="flex space-x-1 justify-center"><div class="poker-card"><span class="rank suit-red">K</span><span class="suit suit-red">♥</span></div><div class="poker-card"><span class="rank suit-black">K</span><span class="suit suit-black">♠</span></div><div class="poker-card"><span class="rank suit-black">K</span><span class="suit suit-black">♣</span></div><div class="poker-card"><span class="rank suit-red">5</span><span class="suit suit-red">♦</span></div><div class="poker-card"><span class="rank suit-red">5</span><span class="suit suit-red">♥</span></div></div></div>
+                                <div class="bg-gray-800 p-4 rounded-lg"><h4 class="text-lg font-bold">5. 플러쉬</h4><p class="text-sm text-gray-400 mb-2">(같은 무늬 5장)</p><div class="flex space-x-1 justify-center"><div class="poker-card"><span class="rank suit-red">A</span><span class="suit suit-red">♦</span></div><div class="poker-card"><span class="rank suit-red">J</span><span class="suit suit-red">♦</span></div><div class="poker-card"><span class="rank suit-red">9</span><span class="suit suit-red">♦</span></div><div class="poker-card"><span class="rank suit-red">6</span><span class="suit suit-red">♦</span></div><div class="poker-card"><span class="rank suit-red">3</span><span class="suit suit-red">♦</span></div></div></div>
+                                <div class="bg-gray-800 p-4 rounded-lg"><h4 class="text-lg font-bold">6. 스트레이트</h4><p class="text-sm text-gray-400 mb-2">(연속된 숫자 5장)</p><div class="flex space-x-1 justify-center"><div class="poker-card"><span class="rank suit-red">10</span><span class="suit suit-red">♥</span></div><div class="poker-card"><span class="rank suit-black">9</span><span class="suit suit-black">♠</span></div><div class="poker-card"><span class="rank suit-red">8</span><span class="suit suit-red">♦</span></div><div class="poker-card"><span class="rank suit-black">7</span><span class="suit suit-black">♣</span></div><div class="poker-card"><span class="rank suit-black">6</span><span class="suit suit-black">♠</span></div></div></div>
+                                <div class="bg-gray-800 p-4 rounded-lg"><h4 class="text-lg font-bold">7. 트리플</h4><p class="text-sm text-gray-400 mb-2">(같은 숫자 3장)</p><div class="flex space-x-1 justify-center"><div class="poker-card"><span class="rank suit-black">Q</span><span class="suit suit-black">♣</span></div><div class="poker-card"><span class="rank suit-red">Q</span><span class="suit suit-red">♥</span></div><div class="poker-card"><span class="rank suit-black">Q</span><span class="suit suit-black">♠</span></div><div class="poker-card"><span class="rank suit-red">9</span><span class="suit suit-red">♦</span></div><div class="poker-card"><span class="rank suit-black">2</span><span class="suit suit-black">♣</span></div></div></div>
+                                <div class="bg-gray-800 p-4 rounded-lg"><h4 class="text-lg font-bold">8. 투 페어</h4><p class="text-sm text-gray-400 mb-2">(두 개의 페어)</p><div class="flex space-x-1 justify-center"><div class="poker-card"><span class="rank suit-black">J</span><span class="suit suit-black">♠</span></div><div class="poker-card"><span class="rank suit-red">J</span><span class="suit suit-red">♥</span></div><div class="poker-card"><span class="rank suit-red">8</span><span class="suit suit-red">♦</span></div><div class="poker-card"><span class="rank suit-black">8</span><span class="suit suit-black">♣</span></div><div class="poker-card"><span class="rank suit-red">5</span><span class="suit suit-red">♥</span></div></div></div>
+                                <div class="bg-gray-800 p-4 rounded-lg"><h4 class="text-lg font-bold">9. 원 페어</h4><p class="text-sm text-gray-400 mb-2">(같은 숫자 2장)</p><div class="flex space-x-1 justify-center"><div class="poker-card"><span class="rank suit-black">A</span><span class="suit suit-black">♣</span></div><div class="poker-card"><span class="rank suit-red">A</span><span class="suit suit-red">♦</span></div><div class="poker-card"><span class="rank suit-black">K</span><span class="suit suit-black">♠</span></div><div class="poker-card"><span class="rank suit-red">10</span><span class="suit suit-red">♥</span></div><div class="poker-card"><span class="rank suit-black">3</span><span class="suit suit-black">♣</span></div></div></div>
+                                <div class="bg-gray-800 p-4 rounded-lg"><h4 class="text-lg font-bold">10. 하이 카드</h4><p class="text-sm text-gray-400 mb-2">(아무 조합도 없을 때)</p><div class="flex space-x-1 justify-center"><div class="poker-card"><span class="rank suit-black">K</span><span class="suit suit-black">♠</span></div><div class="poker-card"><span class="rank suit-red">Q</span><span class="suit suit-red">♦</span></div><div class="poker-card"><span class="rank suit-black">9</span><span class="suit suit-black">♣</span></div><div class="poker-card"><span class="rank suit-red">7</span><span class="suit suit-red">♥</span></div><div class="poker-card"><span class="rank suit-black">4</span><span class="suit suit-black">♠</span></div></div></div>
+                            </div>
+                            <p class="mt-4 pt-4 border-t border-gray-700"><strong class="text-amber-400">키커 (Kicker):</strong> 같은 족보일 경우, 족보를 구성하지 않은 나머지 카드 중 가장 높은 카드로 승패를 결정합니다.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-3xl font-bold text-white mb-6 border-l-4 border-amber-400 pl-4">Part 3. 텍사스 홀덤 입문</h3>
+                        <div class="bg-gray-800 p-8 rounded-lg space-y-10">
+                            <div>
+                                <h4 class="text-2xl font-bold mb-4">3.1. 게임의 기본 흐름</h4>
+                                <p class="text-lg">홀덤은 각자만 아는 <span class="font-bold text-amber-400">개인 카드(Hole Cards) 2장</span>과 모두가 공유하는 <span class="font-bold text-amber-400">공용 카드(Community Cards) 5장</span>, 총 7장 중 가장 강한 5장의 조합을 만들어 승부를 겨루는 게임입니다. <span class="font-bold text-amber-400">이 '숨겨진 정보'와 '공개된 정보'의 결합이 모든 전략의 시작입니다.</span></p>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold mb-4">3.2. 테이블 위의 역할</h4>
+                                <p class="text-lg mb-4">매 판마다 역할이 시계 방향으로 돌아가며, 베팅 순서를 정합니다.</p>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start gap-3"><i class="fas fa-compact-disc text-amber-400 mt-1"></i><div><strong class="text-white">딜러 버튼(D):</strong> 그 판의 기준점. 가장 늦게 행동해 가장 유리한 위치입니다.</div></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-coins text-amber-400 mt-1"></i><div><strong class="text-white">블라인드(SB/BB):</strong> 카드를 받기 전 의무적으로 내는 판돈. 게임에 활기를 불어넣는 핵심 장치입니다.</div></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold mb-4">3.3. 한 판의 여정: 4번의 베팅 라운드</h4>
+                                <ol class="space-y-4">
+                                    <li><strong class="text-amber-400 text-lg">1. 프리플랍 (Pre-flop):</strong> 개인 카드 2장을 받고 시작하는 첫 베팅. 가능성만 보고 싸웁니다.</li>
+                                    <li><strong class="text-amber-400 text-lg">2. 플랍 (Flop):</strong> 공용 카드 3장이 깔리고 두 번째 베팅. 판의 흐름이 결정되는 가장 중요한 순간입니다.</li>
+                                    <li><strong class="text-amber-400 text-lg">3. 턴 (Turn):</strong> 네 번째 공용 카드가 깔리고 세 번째 베팅. 역전의 기회가 생깁니다.</li>
+                                    <li><strong class="text-amber-400 text-lg">4. 리버 (River):</strong> 마지막 공용 카드가 깔리고 마지막 베팅. 최종 승부가 결정됩니다.</li>
+                                    <li><strong class="text-amber-400 text-lg">5. 쇼다운 (Showdown):</strong> 남은 플레이어들이 카드를 공개해 최종 승자를 가립니다.</li>
+                                </ol>
+                            </div>
+                             <div>
+                                <h4 class="text-2xl font-bold mb-4">3.4. 포지션의 이해</h4>
+                                <div class="my-4 rounded-lg overflow-hidden">
+                                    <img src="https://github.com/TreySong87/PokerOJT/blob/main/image%20(15).png?raw=true" alt="포커 테이블 포지션" class="w-full h-auto object-contain">
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="bg-gray-900 p-4 rounded-lg">
+                                        <h5 class="font-bold text-amber-400">초기 포지션 (EP)</h5>
+                                        <p class="text-sm">UTG, UTG+1: 가장 먼저 행동해야 하는 불리한 자리. 아주 좋은 핸드로만 플레이.</p>
+                                    </div>
+                                     <div class="bg-gray-900 p-4 rounded-lg">
+                                        <h5 class="font-bold text-amber-400">중간 포지션 (MP)</h5>
+                                        <p class="text-sm">MP, LJ: 중간 자리. 여전히 뒤에 플레이어들이 있어 신중한 플레이 필요.</p>
+                                    </div>
+                                     <div class="bg-gray-900 p-4 rounded-lg">
+                                        <h5 class="font-bold text-amber-400">후기 포지션 (LP)</h5>
+                                        <p class="text-sm">HJ, CO, BTN: 나중에 행동하여 정보가 많은 가장 유리한 자리. 특히 버튼(BTN)이 최고.</p>
+                                    </div>
+                                     <div class="bg-gray-900 p-4 rounded-lg">
+                                        <h5 class="font-bold text-amber-400">블라인드 (Blinds)</h5>
+                                        <p class="text-sm">SB, BB: 의무 베팅 후, 플랍 이후 가장 먼저 행동해야 하는 불리한 자리.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold mb-4">3.5. 당신의 선택: 액션의 종류</h4>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                    <div class="bg-gray-900 p-4 rounded-md text-center"><i class="fas fa-flag-checkered mr-2"></i><strong>폴드 (Fold)</strong><p class="text-sm">포기</p></div>
+                                    <div class="bg-gray-900 p-4 rounded-md text-center"><i class="fas fa-hand mr-2"></i><strong>체크 (Check)</strong><p class="text-sm">차례 넘기기</p></div>
+                                    <div class="bg-gray-900 p-4 rounded-md text-center"><i class="fas fa-hand-holding-dollar mr-2"></i><strong>벳 (Bet)</strong><p class="text-sm">첫 베팅</p></div>
+                                    <div class="bg-gray-900 p-4 rounded-md text-center"><i class="fas fa-equals mr-2"></i><strong>콜 (Call)</strong><p class="text-sm">따라가기</p></div>
+                                    <div class="bg-gray-900 p-4 rounded-md text-center"><i class="fas fa-arrow-up mr-2"></i><strong>레이즈 (Raise)</strong><p class="text-sm">판 키우기</p></div>
+                                    <div class="bg-gray-900 p-4 rounded-md text-center"><i class="fas fa-star mr-2"></i><strong>올인 (All-in)</strong><p class="text-sm">모든 칩 걸기</p></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -506,4 +632,6 @@
     </script>
 </body>
 </html>
+
+
 
