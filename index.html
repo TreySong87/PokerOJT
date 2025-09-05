@@ -11,14 +11,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Slate & Amber -->
-    <!-- Application Structure Plan: A single-page, vertically scrolling application with a fixed top navigation bar. This structure provides a clear, linear learning path for new employees, guiding them from foundational concepts (Dopamine), through the history and types of poker, into a detailed guide on how to play the main game (Texas Hold'em), and finally to the modern understanding of poker as a skill game and how to enjoy it responsibly. This was chosen for its intuitive, story-telling flow. -->
+    <!-- Application Structure Plan: A single-page, vertically scrolling application with a fixed top navigation bar. This structure provides a clear, linear learning path for new employees, guiding them from foundational concepts (Dopamine), through the history and types of poker, into a detailed guide on how to play the main game (Texas Hold'em), and finally to the modern understanding of poker as a skill game and how to enjoy it responsibly. Key interactions include a dynamic chart, visual storytelling elements like the timeline, and a modal for the glossary. This was chosen for its intuitive, story-telling flow. -->
     <!-- Visualization & Content Choices: 
         1. Dopamine Ranking -> Goal: Inform & Impact -> Viz: Horizontal Bar Chart -> Interaction: Hover for details -> Justification: Visually demonstrates the high impact of gambling relative to other activities. Library: Chart.js.
         2. Poker's Dopamine Triggers -> Goal: Explain -> Presentation: 3-column card layout with images -> Justification: Clearly separates the three core psychological drivers. Method: HTML/CSS.
         3. Hold'em History -> Goal: Explain Evolution -> Presentation: Vertical Timeline -> Justification: Shows the chronological progression of how Hold'em became dominant. Method: HTML/CSS.
-        4. Hold'em Guide -> Goal: Educate & Instruct -> Presentation: Multi-part instructional layout with visual aids (cards, icons, diagrams) -> Justification: Provides a comprehensive, step-by-step guide for beginners, breaking down complex rules into digestible parts. Method: HTML/CSS.
+        4. Hold'em Guide -> Goal: Educate & Instruct -> Presentation: Multi-part instructional layout with visual aids (cards, icons, diagrams) -> Justification: Provides a comprehensive, step-by-step guide for beginners. Method: HTML/CSS.
         5. Skill vs. Luck -> Goal: Persuade & Inform -> Presentation: Story-driven content blocks with icons/images -> Justification: Convinces the user of poker's skill-based nature through narrative evidence. Method: HTML/CSS.
-        6. How to Enjoy Poker -> Goal: Advise & Guide -> Presentation: Multi-part section with icon-driven cards -> Justification: Provides actionable advice for responsible gaming in a clear, engaging format. Method: HTML/CSS.
+        6. Glossary -> Goal: Reference -> Presentation: Searchable table in a modal window -> Interaction: Click to open, search/filter -> Justification: Provides on-demand access to reference material without cluttering the main flow. Method: HTML/CSS/JS.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
@@ -26,6 +26,7 @@
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #111827;
             color: #E5E7EB;
+            word-break: keep-all; /* 한글 단어 깨짐 방지 */
         }
         .nav-link.active {
             color: #FBBF24;
@@ -62,6 +63,7 @@
             align-items: center;
             font-weight: bold;
             font-size: 1.25rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .poker-card .rank {
             line-height: 1;
@@ -72,6 +74,29 @@
         }
         .suit-red { color: #EF4444; }
         .suit-black { color: #111827; }
+
+        /* Glossary Modal Styles */
+        #glossary-content {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        #glossary-content ::-webkit-scrollbar {
+            width: 8px;
+        }
+        #glossary-content ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        #glossary-content ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+        #glossary-content ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        #glossary-content .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -233,32 +258,26 @@
             <div class="container mx-auto px-4">
                 <div class="text-center mb-16">
                     <h2 class="text-4xl md:text-6xl font-black text-amber-400">포커? 운빨게임 아니야?</h2>
-                    <p class="mt-4 text-xl md:text-2xl max-w-3xl mx-auto">많은 사람들이 묻습니다. 하지만 현대 포커는 과학과 전략이 지배하는 치열한 마인드스포츠로 진화했습니다.</p>
+                    <p class="mt-4 text-xl md:text-2xl max-w-3xl mx-auto">많은 사람들이 묻습니다. 하지만 현대 포커는 전략과 수학이 지배하는 치열한 마인드스포츠로 진화했습니다.</p>
                 </div>
 
                 <div class="max-w-4xl mx-auto space-y-16">
-                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12 text-center md:text-left">
-                        <div class="w-full md:w-1/3 text-6xl text-amber-400"><i class="fas fa-robot"></i></div>
-                        <div class="w-full md:w-2/3">
-                            <h3 class="text-3xl font-bold">증거 1: 인공지능이 증명한 실력</h3>
-                            <p class="mt-4 text-lg leading-relaxed">2017년, '리브라투스'라는 AI가 세계 최정상급 프로 4명을 12만 핸드의 1대1 대결에서 압도적으로 격파했습니다. 이는 장기적으로 <span class="font-bold text-white">운이 상쇄되고 오직 전략의 품질이 승패를 가른다</span>는 강력한 증거입니다. 2019년에는 여러 명이 동시에 플레이하는 게임에서도 AI '플루리부스'가 인간을 이겼습니다.</p>
-                        </div>
+                    <div class="text-center">
+                        <div class="text-6xl text-amber-400 mb-4"><i class="fas fa-robot"></i></div>
+                        <h3 class="text-3xl font-bold">증거 1: 인공지능이 증명한 실력</h3>
+                        <p class="mt-4 text-lg leading-relaxed">2017년, '리브라투스'라는 AI가 세계 최정상급 프로 4명을 12만 핸드의 1대1 대결에서 압도적으로 격파했습니다. 이는 장기적으로 <span class="font-bold text-white">운이 상쇄되고 오직 전략의 품질이 승패를 가른다</span>는 강력한 증거입니다. 2019년에는 여러 명이 동시에 플레이하는 게임에서도 AI '플루리부스'가 인간을 이겼습니다.</p>
                     </div>
 
-                    <div class="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12 text-center md:text-right">
-                        <div class="w-full md:w-1/3 text-6xl text-amber-400"><i class="fas fa-brain"></i></div>
-                        <div class="w-full md:w-2/3">
-                            <h3 class="text-3xl font-bold">증거 2: GTO, 전략을 수학으로 만들다</h3>
-                            <p class="mt-4 text-lg leading-relaxed"><span class="font-bold text-white">GTO(게임 이론 최적 전략)</span>는 상대의 어떤 수에도 내 수익이 깎이지 않는, '파훼 불가능한' 완벽한 플레이의 기준점입니다. 2010년대 중반 이후 GTO 분석 프로그램(솔버)이 대중화되면서, 포커는 더 이상 감이나 경험에만 의존하는 게임이 아닌, <span class="font-bold text-white">누구나 학습하고 훈련할 수 있는 수학적 영역</span>이 되었습니다.</p>
-                        </div>
+                    <div class="text-center">
+                        <div class="text-6xl text-amber-400 mb-4"><i class="fas fa-brain"></i></div>
+                        <h3 class="text-3xl font-bold">증거 2: GTO, 전략을 수학으로 만들다</h3>
+                        <p class="mt-4 text-lg leading-relaxed"><span class="font-bold text-white">GTO(게임 이론 최적 전략)</span>는 상대의 어떤 수에도 내 수익이 깎이지 않는, '파훼 불가능한' 완벽한 플레이의 기준점입니다. 2010년대 중반 이후 GTO 분석 프로그램(솔버)이 대중화되면서, 포커는 더 이상 감이나 경험에만 의존하는 게임이 아닌, <span class="font-bold text-white">누구나 학습하고 훈련할 수 있는 수학적 영역</span>이 되었습니다.</p>
                     </div>
 
-                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12 text-center md:text-left">
-                        <div class="w-full md:w-1/3 text-6xl text-amber-400"><i class="fas fa-medal"></i></div>
-                        <div class="w-full md:w-2/3">
-                            <h3 class="text-3xl font-bold">증거 3: 사회적, 제도적 인정</h3>
-                            <p class="mt-4 text-lg leading-relaxed">미국, 독일 등 주요 국가들은 이제 전업 포커 플레이어를 세법상 하나의 <span class="font-bold text-white">'직업'</span>으로 인정하고 있습니다. 그리고 2024년 11월, 마침내 국제 마인드스포츠 협회(IMSA)가 포커를 체스, 바둑과 같은 공식 <span class="font-bold text-white">'마인드스포츠'</span>로 인정하며 그 위상을 공인했습니다.</p>
-                        </div>
+                    <div class="text-center">
+                        <div class="text-6xl text-amber-400 mb-4"><i class="fas fa-medal"></i></div>
+                        <h3 class="text-3xl font-bold">증거 3: 사회적, 제도적 인정</h3>
+                        <p class="mt-4 text-lg leading-relaxed">미국, 독일 등 주요 국가들은 이제 전업 포커 플레이어를 세법상 하나의 <span class="font-bold text-white">'직업'</span>으로 인정하고 있습니다. 그리고 2024년 11월, 마침내 국제 마인드스포츠 협회(IMSA)가 포커를 체스, 바둑과 같은 공식 <span class="font-bold text-white">'마인드스포츠'</span>로 인정하며 그 위상을 공인했습니다.</p>
                     </div>
                 </div>
 
@@ -383,6 +402,64 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                     <div>
+                        <h3 class="text-3xl font-bold text-white mb-6 border-l-4 border-amber-400 pl-4">Part 4. 승리를 위한 첫걸음: 기본 전략</h3>
+                        <div class="bg-gray-900 p-8 rounded-lg space-y-10">
+                            <div>
+                                <h4 class="text-2xl font-bold mb-4">4.1. 시작이 반이다: 시작 핸드의 중요성</h4>
+                                <p class="text-lg mb-4">초보자가 가장 많이 하는 실수는 너무 많은 핸드로 게임에 참여하는 것입니다. 좋은 패가 들어올 때까지 기다리는 인내심은 포커의 가장 중요한 미덕 중 하나입니다.</p>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div class="bg-green-900/50 border border-green-500 p-4 rounded-lg">
+                                        <h5 class="font-bold text-green-400 text-center text-xl mb-4">플레이 할만한 핸드 (프리미엄 핸드)</h5>
+                                        <div class="flex justify-center items-center gap-x-4 gap-y-8 flex-wrap min-h-[18rem]">
+                                            <div class="relative w-28 h-28 flex-shrink-0"><div class="poker-card absolute z-10" style="transform: rotate(-15deg); bottom: 0; left: 0;"><span class="rank suit-red">A</span><span class="suit suit-red">♦</span></div><div class="poker-card absolute z-20" style="transform: rotate(15deg); bottom: 0; left: 2.25rem;"><span class="rank suit-black">A</span><span class="suit suit-black">♠</span></div></div>
+                                            <div class="relative w-28 h-28 flex-shrink-0"><div class="poker-card absolute z-10" style="transform: rotate(-15deg); bottom: 0; left: 0;"><span class="rank suit-red">K</span><span class="suit suit-red">♥</span></div><div class="poker-card absolute z-20" style="transform: rotate(15deg); bottom: 0; left: 2.25rem;"><span class="rank suit-black">K</span><span class="suit suit-black">♣</span></div></div>
+                                            <div class="relative w-28 h-28 flex-shrink-0"><div class="poker-card absolute z-10" style="transform: rotate(-15deg); bottom: 0; left: 0;"><span class="rank suit-red">Q</span><span class="suit suit-red">♦</span></div><div class="poker-card absolute z-20" style="transform: rotate(15deg); bottom: 0; left: 2.25rem;"><span class="rank suit-black">Q</span><span class="suit suit-black">♠</span></div></div>
+                                            <div class="relative w-28 h-28 flex-shrink-0"><div class="poker-card absolute z-10" style="transform: rotate(-15deg); bottom: 0; left: 0;"><span class="rank suit-red">J</span><span class="suit suit-red">♥</span></div><div class="poker-card absolute z-20" style="transform: rotate(15deg); bottom: 0; left: 2.25rem;"><span class="rank suit-black">J</span><span class="suit suit-black">♣</span></div></div>
+                                            <div class="relative w-28 h-28 flex-shrink-0"><div class="poker-card absolute z-10" style="transform: rotate(-15deg); bottom: 0; left: 0;"><span class="rank suit-red">A</span><span class="suit suit-red">♥</span></div><div class="poker-card absolute z-20" style="transform: rotate(15deg); bottom: 0; left: 2.25rem;"><span class="rank suit-red">K</span><span class="suit suit-red">♥</span></div></div>
+                                            <div class="relative w-28 h-28 flex-shrink-0"><div class="poker-card absolute z-10" style="transform: rotate(-15deg); bottom: 0; left: 0;"><span class="rank suit-black">A</span><span class="suit suit-black">♠</span></div><div class="poker-card absolute z-20" style="transform: rotate(15deg); bottom: 0; left: 2.25rem;"><span class="rank suit-black">Q</span><span class="suit suit-black">♠</span></div></div>
+                                        </div>
+                                        <p class="text-center mt-4 text-2xl font-black text-green-300">OK!</p>
+                                    </div>
+                                    <div class="bg-red-900/50 border border-red-500 p-4 rounded-lg">
+                                        <h5 class="font-bold text-red-400 text-center text-xl mb-4">피해야 할 핸드 (약한 핸드)</h5>
+                                        <div class="flex justify-center items-center gap-x-4 gap-y-8 flex-wrap min-h-[18rem]">
+                                             <div class="relative w-28 h-28 flex-shrink-0"><div class="poker-card absolute z-10" style="transform: rotate(-15deg); bottom: 0; left: 0;"><span class="rank suit-red">7</span><span class="suit suit-red">♦</span></div><div class="poker-card absolute z-20" style="transform: rotate(15deg); bottom: 0; left: 2.25rem;"><span class="rank suit-black">2</span><span class="suit suit-black">♠</span></div></div>
+                                             <div class="relative w-28 h-28 flex-shrink-0"><div class="poker-card absolute z-10" style="transform: rotate(-15deg); bottom: 0; left: 0;"><span class="rank suit-red">9</span><span class="suit suit-red">♥</span></div><div class="poker-card absolute z-20" style="transform: rotate(15deg); bottom: 0; left: 2.25rem;"><span class="rank suit-black">4</span><span class="suit suit-black">♣</span></div></div>
+                                             <div class="relative w-28 h-28 flex-shrink-0"><div class="poker-card absolute z-10" style="transform: rotate(-15deg); bottom: 0; left: 0;"><span class="rank suit-red">K</span><span class="suit suit-red">♦</span></div><div class="poker-card absolute z-20" style="transform: rotate(15deg); bottom: 0; left: 2.25rem;"><span class="rank suit-black">5</span><span class="suit suit-black">♠</span></div></div>
+                                             <div class="relative w-28 h-28 flex-shrink-0"><div class="poker-card absolute z-10" style="transform: rotate(-15deg); bottom: 0; left: 0;"><span class="rank suit-red">A</span><span class="suit suit-red">♦</span></div><div class="poker-card absolute z-20" style="transform: rotate(15deg); bottom: 0; left: 2.25rem;"><span class="rank suit-black">6</span><span class="suit suit-black">♣</span></div></div>
+                                             <div class="relative w-28 h-28 flex-shrink-0"><div class="poker-card absolute z-10" style="transform: rotate(-15deg); bottom: 0; left: 0;"><span class="rank suit-red">Q</span><span class="suit suit-red">♥</span></div><div class="poker-card absolute z-20" style="transform: rotate(15deg); bottom: 0; left: 2.25rem;"><span class="rank suit-black">3</span><span class="suit suit-black">♠</span></div></div>
+                                             <div class="relative w-28 h-28 flex-shrink-0"><div class="poker-card absolute z-10" style="transform: rotate(-15deg); bottom: 0; left: 0;"><span class="rank suit-black">10</span><span class="suit suit-black">♣</span></div><div class="poker-card absolute z-20" style="transform: rotate(15deg); bottom: 0; left: 2.25rem;"><span class="rank suit-red">7</span><span class="suit suit-red">♥</span></div></div>
+                                        </div>
+                                        <p class="text-center mt-4 text-lg font-bold text-red-300">Don't try this at home</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold mb-4">4.2. 자리가 힘이다: 포지션의 이해</h4>
+                                <div class="space-y-3 text-lg">
+                                    <p><strong class="text-amber-400">초기 포지션 (Early Position - EP):</strong> 블라인드와 그 옆자리(UTG)처럼 먼저 행동해야 하는 불리한 자리입니다. 이 위치에서는 정보가 부족하기 때문에 아주 강력한 핸드로만 게임에 참여해야 합니다.</p>
+                                    <p><strong class="text-amber-400">중간 포지션 (Middle Position - MP):</strong> 초기 포지션보다는 낫지만 여전히 뒤에 여러 플레이어가 남아있어 신중해야 하는 자리입니다.</p>
+                                    <p><strong class="text-amber-400">후기 포지션 (Late Position - LP):</strong> 컷오프(CO, 버튼 오른쪽)와 버튼(BTN)처럼 나중에 행동하는 가장 유리한 자리입니다. 상대들의 액션을 보고 정보를 얻을 수 있으므로, 더 다양한 핸드로 게임에 참여하거나 블러핑을 시도하는 등 공격적인 플레이가 가능합니다.</p>
+                                </div>
+                            </div>
+                             <div>
+                                <h4 class="text-2xl font-bold mb-4">4.3. 초보자를 위한 5가지 핵심 플레이 팁</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start gap-3"><i class="fas fa-fighter-jet text-amber-400 mt-1"></i><div><strong class="text-white">적게, 하지만 공격적으로:</strong> 좋은 핸드로만 참여하되, 일단 참여했다면 콜만 하기보다는 벳이나 레이즈로 주도권을 잡으세요.</div></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-map-marker-alt text-amber-400 mt-1"></i><div><strong class="text-white">포지션을 존중하라:</strong> 불리한 자리에선 참고, 유리한 자리에선 그 이점을 최대한 활용하세요.</div></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-mask text-amber-400 mt-1"></i><div><strong class="text-white">블러핑은 신중하게:</strong> 초보 단계에서는 강한 패로 확실하게 이기는 '밸류 베팅'에 집중하는 것이 훨씬 효과적입니다.</div></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-eye text-amber-400 mt-1"></i><div><strong class="text-white">테이블을 항상 주시하라:</strong> 내 카드만 보지 말고, 상대방의 베팅 패턴을 읽는 습관을 들이세요.</div></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-fire-extinguisher text-amber-400 mt-1"></i><div><strong class="text-white">'틸트(Tilt)'를 경계하라:</strong> 감정적으로 흔들리는 '틸트'는 가장 큰 적입니다. 평정심을 잃었다면 즉시 휴식을 취하세요.</div></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-12 text-center">
+                        <button id="open-glossary-modal" class="bg-amber-500 text-gray-900 font-bold py-4 px-10 rounded-lg hover:bg-amber-400 transition duration-300 text-xl shadow-lg transform hover:scale-105">
+                            <i class="fas fa-book-open mr-2"></i> Appendix: 홀덤 용어집 보기
+                        </button>
                     </div>
                 </div>
             </div>
@@ -521,6 +598,19 @@
         </div>
     </footer>
 
+    <!-- Appendix Modal -->
+    <div id="glossary-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-gray-900 rounded-lg shadow-xl max-w-4xl w-full h-[90vh] flex flex-col">
+            <div id="glossary-header" class="flex justify-between items-center p-4 border-b border-gray-700 flex-shrink-0">
+                <h2 class="text-2xl font-bold text-amber-400">Appendix: 홀덤 용어집</h2>
+                <button id="close-glossary-modal" class="text-2xl text-gray-400 hover:text-white transition">&times;</button>
+            </div>
+            <div id="glossary-content" class="overflow-y-auto flex-grow">
+                <!-- Content from pokerword.html will be injected here -->
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Mobile Menu Toggle
@@ -532,7 +622,7 @@
 
             // Dopamine Chart
             const ctx = document.getElementById('dopamineChart').getContext('2d');
-            const dopamineLabels = ['맛있는 음식', '섹스', '운동', '니코틴', '알코올', '도박', '마약 (중독성 약물)'];
+            const dopamineLabels = ['맛있는 음식', '이성과의 스킨쉽', '운동', '니코틴', '알코올', '도박', '마약 (중독성 약물)'];
             const dopamineData = [50, 100, 130, 150, 200, 450, 1000];
             
             const bgColors = dopamineLabels.map(label => label === '도박' ? 'rgba(239, 68, 68, 0.7)' : 'rgba(251, 191, 36, 0.6)');
@@ -628,10 +718,125 @@
                     });
                 });
             });
+
+            // Glossary Modal Logic
+            const glossaryModal = document.getElementById('glossary-modal');
+            const openGlossaryButton = document.getElementById('open-glossary-modal');
+            const closeGlossaryButton = document.getElementById('close-glossary-modal');
+            const glossaryContent = document.getElementById('glossary-content');
+
+            const pokerwordHTML = `
+                <div class="bg-gray-900 text-gray-200 h-full overflow-y-auto modal-scrollbar">
+                    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+                        <div class="text-center mb-8">
+                            <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2">텍사스 홀덤 포커 용어집</h1>
+                            <p class="text-gray-400">OJT 자료용 포커 용어 정리표입니다. 검색창을 이용해 원하는 용어를 빠르게 찾아보세요.</p>
+                        </div>
+                        <div class="mb-6 sticky top-0 bg-gray-900 py-4 z-20">
+                            <div class="relative">
+                                <input type="text" id="searchInput" placeholder="용어, 설명 등 검색..." class="w-full bg-gray-800 border border-gray-600 rounded-lg py-3 px-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 transition">
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <i class="fas fa-search text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg shadow-xl overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full">
+                                    <thead class="bg-gray-700 sticky-header">
+                                        <tr>
+                                            <th class="w-1/4 sm:w-1/5 text-left font-bold text-white uppercase p-4">용어 (Term)</th>
+                                            <th class="w-3/4 sm:w-4/5 text-left font-bold text-white uppercase p-4">설명 (Description)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="termsTableBody" class="divide-y divide-gray-700">
+                                        <tr class="section-header"><td colspan="2" class="px-4 py-3 text-lg font-bold bg-gray-700/50 text-amber-300">제 1부: 게임의 기초</td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">게임의 흐름 (The Flow)</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>프리플랍 (Pre-flop):</b> 2장의 홀 카드를 받고 커뮤니티 카드가 깔리기 전 첫 베팅 라운드.</li><li><b>플랍 (Flop):</b> 3장의 커뮤니티 카드가 공개된 후 두 번째 베팅 라운드.</li><li><b>턴 (Turn):</b> 네 번째 커뮤니티 카드가 공개된 후 세 번째 베팅 라운드.</li><li><b>리버 (River):</b> 마지막 다섯 번째 커뮤니티 카드가 공개된 후 최종 베팅 라운드.</li><li><b>쇼다운 (Showdown):</b> 두 명 이상 남았을 때 카드를 공개해 승자를 가림.</li><li><b>번 카드 (Burn Card):</b> 부정행위 방지를 위해 플랍, 턴, 리버 직전에 버리는 카드.</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">테이블에서의 역할 (Roles)</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>딜러 / 버튼 (Dealer / Button):</b> 명목상 딜러 위치. 플랍 이후 가장 마지막에 액션하여 전략적으로 유리함.</li><li><b>블라인드 (Blinds):</b> 초기 팟을 형성하는 의무 베팅.<ul><li><b>스몰 블라인드 (SB):</b> 버튼 왼쪽 플레이어의 작은 의무 베팅.</li><li><b>빅 블라인드 (BB):</b> SB 왼쪽 플레이어의 큰 의무 베팅. 프리플랍 최소 베팅 기준.</li></ul></li><li><b>앤티 (Ante):</b> 모든 플레이어가 핸드 시작 전 내는 소액의 의무 베팅 (주로 토너먼트 후반).</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">카드 (The Cards)</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>홀 카드 / 포켓 카드:</b> 각 플레이어에게 주어지는 2장의 개인 카드.</li><li><b>커뮤니티 카드 / 보드:</b> 테이블 중앙에 깔리는 5장의 공용 카드.</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">돈 (The Money)</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>팟 (Pot):</b> 플레이어들이 베팅한 칩의 총합.</li><li><b>바이인 (Buy-in):</b> 게임 참여에 필요한 최소 금액.</li><li><b>뱅크롤 (Bankroll):</b> 포커를 위해 마련한 총 자금.</li><li><b>레이크 (Rake):</b> 포커룸이 떼어가는 수수료.</li></ul></td></tr>
+                                        <tr class="section-header"><td colspan="2" class="px-4 py-3 text-lg font-bold bg-gray-700/50 text-amber-300">제 2부: 액션의 언어</td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">핵심 액션 (Core Actions)</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>벳 (Bet):</b> 해당 라운드에서 가장 먼저 돈을 거는 행위.</li><li><b>콜 (Call):</b> 앞사람과 동일한 금액을 내고 게임을 이어감.</li><li><b>레이즈 (Raise):</b> 앞사람의 벳보다 더 많은 금액을 거는 행위.</li><li><b>폴드 (Fold):</b> 핸드를 포기하고 판에서 빠짐.</li><li><b>체크 (Check):</b> 돈을 걸지 않고 차례를 넘김 (앞에 벳이 없을 경우에만 가능).</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">심화 액션 (Advanced Actions)</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>리레이즈 (Re-raise):</b> 이미 레이즈가 나온 상황에 다시 레이즈하는 것 (3-벳, 4-벳 등).</li><li><b>올인 (All-in):</b> 가진 모든 칩을 베팅.</li><li><b>스트래들 (Straddle):</b> UTG 플레이어가 선택적으로 하는 블라인드 레이즈.</li><li><b>체크-레이즈 (Check-Raise):</b> 체크 후, 상대가 벳하자 다시 레이즈하는 기만적인 플레이.</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">액션 관련 용어</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>액션 (Action):</b> 플레이어의 행동(벳, 콜 등) 또는 게임의 활발함.</li><li><b>머크 (Muck):</b> 쇼다운에서 패배 시 카드를 보여주지 않고 버리는 행위.</li><li><b>스냅 콜 (Snap Call):</b> 고민 없이 즉시 콜하는 행위.</li></ul></td></tr>
+                                        <tr class="section-header"><td colspan="2" class="px-4 py-3 text-lg font-bold bg-gray-700/50 text-amber-300">제 3부: 핸드 랭킹과 가치</td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">공식 포커 핸드 족보</td><td class="p-4"><ol class="list-decimal list-inside space-y-1 font-semibold"><li>로얄 플러시</li><li>스트레이트 플러시</li><li>포카드</li><li>풀하우스</li><li>플러시</li><li>스트레이트</li><li>쓰리 오브 어 카인드 / 트리플 / 셋</li><li>투 페어</li><li>원 페어</li><li>하이 카드</li></ol></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">키커 (Kicker)</td><td class="p-4">같은 족보일 때 승패를 가르는 족보 외의 나머지 카드.</td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">스타팅 핸드 이해</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>파켓 페어 (Pocket Pair):</b> 홀 카드가 같은 숫자인 경우 (e.g., 77).</li><li><b>수딧 (Suited):</b> 홀 카드 무늬가 같은 경우 (e.g., AKs).</li><li><b>오프숫 (Off-suit):</b> 홀 카드 무늬가 다른 경우 (e.g., AKo).</li><li><b>커넥터 (Connectors):</b> 홀 카드 숫자가 연속되는 경우 (e.g., 87s).</li><li><b>개퍼 (Gappers):</b> 홀 카드 숫자 사이에 간격이 있는 경우 (e.g., 97s).</li><li><b>브로드웨이 (Broadway):</b> 10, J, Q, K, A 중 두 장으로 구성된 핸드.</li></ul></td></tr>
+                                        <tr class="section-header"><td colspan="2" class="px-4 py-3 text-lg font-bold bg-gray-700/50 text-amber-300">제 4부: 포지션의 전략적 중요성</td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">포지션이란?</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>인 포지션 (IP):</b> 상대보다 나중에 행동하여 정보적 우위를 가짐.</li><li><b>아웃 오브 포지션 (OOP):</b> 상대보다 먼저 행동하여 불리함.</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">포지션 명칭</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>얼리 포지션 (EP):</b> UTG, UTG+1 등.</li><li><b>미들 포지션 (MP):</b> 로잭 (LJ), 하이잭 (HJ).</li><li><b>레이트 포지션 (LP):</b> 컷오프 (CO), 버튼 (BTN).</li><li><b>블라인드 (SB, BB):</b> 프리플랍은 늦게, 플랍 이후는 가장 먼저 행동.</li></ul></td></tr>
+                                        <tr class="section-header"><td colspan="2" class="px-4 py-3 text-lg font-bold bg-gray-700/50 text-amber-300">제 5부: 중급 전략 개념</td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">핸드의 상태</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>메이드 핸드 (Made Hand):</b> 이미 쇼다운 가치가 있는 완성된 핸드.</li><li><b>드로잉 핸드 / 드로우 (Draw):</b> 다음 카드에 따라 강해질 잠재력이 있는 미완성 핸드.</li><li><b>콤보 드로우 (Combo Draw):</b> 두 가지 이상의 드로우를 동시에 가진 강력한 드로우.</li><li><b>몬스터 드로우 (Monster Draw):</b> 12개 이상의 아웃츠를 가진 압도적인 콤보 드로우.</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">베팅의 목적</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>밸류 벳 (Value Bet):</b> 이기고 있을 때, 더 약한 핸드에게 콜을 받기 위한 벳.</li><li><b>블러프 (Bluff):</b> 약한 핸드로, 더 좋은 핸드를 폴드시키기 위한 벳.</li><li><b>세미-블러프 (Semi-Bluff):</b> 드로잉 핸드로 하는 벳.</li><li><b>씬 밸류 벳 (Thin Value Bet):</b> 애매한 강도의 핸드로 하는 얇은 밸류 벳.</li><li><b>블락 벳 (Block Bet):</b> OOP에서 작게 베팅하여 상대의 큰 베팅을 막는 방어적 벳.</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">주도권과 흐름</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>컨티뉴에이션 벳 (C-bet):</b> 프리플랍 공격자가 플랍에서도 공격을 이어나가는 벳.</li><li><b>동크 벳 (Donk Bet):</b> C-bet 기회를 무시하고 OOP 플레이어가 먼저 리드하며 베팅.</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">보드 읽기 (Board Texture)</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>웻 보드 (Wet Board):</b> 드로우 가능성이 많은 보드 (e.g., J♡10♡7♠).</li><li><b>드라이 보드 (Dry Board):</b> 드로우 가능성이 적은 보드 (e.g., K♠7♢2♣).</li><li><b>레인보우 (Rainbow):</b> 플랍 3장 무늬가 모두 다른 경우.</li><li><b>투톤 (Two-Tone):</b> 플랍에 같은 무늬 2장이 깔린 경우.</li><li><b>모노톤 (Monotone):</b> 플랍 3장 무늬가 모두 같은 경우.</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">넛 (The Nuts)</td><td class="p-4">주어진 상황에서 만들 수 있는 가장 강력하고 절대 질 수 없는 핸드.</td></tr>
+                                        <tr class="section-header"><td colspan="2" class="px-4 py-3 text-lg font-bold bg-gray-700/50 text-amber-300">제 6부: 고급 전략 및 수학적 개념</td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">프리플랍 전쟁</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>3-벳 (3-Bet):</b> 프리플랍의 첫 번째 리레이즈.</li><li><b>4-벳 (4-Bet):</b> 3-벳에 대한 리레이즈.</li><li><b>스퀴즈 플레이 (Squeeze Play):</b> 레이저와 콜러가 있는 상황에서 강력하게 3-벳하여 팟을 뺏는 플레이.</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">포커의 수학</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>팟 오즈 (Pot Odds):</b> 콜에 필요한 금액과 팟 크기의 비율.</li><li><b>임플라이드 오즈 (Implied Odds):</b> 드로우 완성 시 미래에 더 얻을 수익까지 고려한 배당률.</li><li><b>에퀴티 (Equity):</b> 핸드가 최종적으로 승리할 확률에 기반한 팟의 지분.</li><li><b>폴드 에퀴티 (Fold Equity):</b> 내 벳으로 상대가 폴드할 가능성에서 발생하는 추가 에퀴티.</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">플레이어 분석 (HUD)</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>VPIP (Voluntarily Put Money In Pot):</b> 플레이어의 자발적 팟 참여율 (루즈/타이트 지표).</li><li><b>PFR (Pre-Flop Raise):</b> 플레이어의 프리플랍 레이즈 비율 (공격성 지표).</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">현대 포커 이론</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>GTO (Game Theory Optimal):</b> 누구에게도 약점 잡히지 않는 수학적으로 균형 잡힌 플레이.</li><li><b>익스플로잇 플레이 (Exploitative Play):</b> 상대의 약점을 집중 공략해 수익을 극대화하는 플레이.</li></ul></td></tr>
+                                        <tr class="section-header"><td colspan="2" class="px-4 py-3 text-lg font-bold bg-gray-700/50 text-amber-300">제 7부: 포커 문화, 심리, 그리고 속어</td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">플레이어 유형</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>스타일:</b> 타이트(Tight), 루즈(Loose), 어그레시브(Aggressive), 패시브(Passive).</li><li><b>별명:</b> TAG, LAG, 피쉬(Fish), 샤크(Shark), 니트(Nit), 웨일(Whale).</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">멘탈 게임</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>틸트 (Tilt):</b> 감정적으로 흥분해 비합리적인 플레이를 하는 최악의 심리 상태.</li><li><b>히어로 콜 (Hero Call):</b> 상대가 블러프라 확신하고 약한 핸드로 큰 벳에 콜하는 것.</li><li><b>슬로우 플레이 / 트래핑:</b> 강한 핸드로 약한 척하여 상대를 유도하는 전략.</li><li><b>앵글 슈팅 (Angle Shooting):</b> 비신사적인 속임수 행위.</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">운과 불운</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>쿨러 (Cooler):</b> 아주 강한 핸드로 더 강한 핸드에 지는 피할 수 없는 불운.</li><li><b>배드빗 (Bad Beat):</b> 압도적 우위에서 낮은 확률로 역전패 당하는 억울한 상황.</li><li><b>석 아웃 (Suck Out):</b> 배드빗 상황에서 역전하는 행위.</li></ul></td></tr>
+                                        <tr><td class="p-4 font-semibold align-top">현대 포커 속어</td><td class="p-4"><ul class="list-disc list-inside space-y-2"><li><b>잼 / 셔브 (Jam / Shove):</b> 올인을 뜻함.</li><li><b>리버 랫 (River Rat):</b> 리버에서 운 좋게 자주 역전하는 플레이어.</li><li><b>쉽 잇 (Ship it):</b> 팟을 이겼을 때 외치는 말.</li><li><b>히터 (Heater):</b> 운이 매우 좋은 시기.</li><li><b>드로잉 데드 (Drawing Dead):</b> 드로우가 떠도 어차피 지는 절망적인 상황.</li><li><b>백도어 (Backdoor):</b> 턴과 리버에 연속으로 카드가 떠서 완성되는 드로우.</li></ul></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            glossaryContent.innerHTML = pokerwordHTML;
+            
+            const searchInput = glossaryContent.querySelector('#searchInput');
+            const termsTableBody = glossaryContent.querySelector('#termsTableBody');
+
+            const filterTable = () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                const rows = termsTableBody.getElementsByTagName('tr');
+                for (let i = 0; i < rows.length; i++) {
+                    const row = rows[i];
+                    if (row.classList.contains('section-header')) continue;
+                    const rowText = row.textContent.toLowerCase();
+                    row.style.display = rowText.includes(searchTerm) ? '' : 'none';
+                }
+
+                const sections = termsTableBody.querySelectorAll('.section-header');
+                sections.forEach(header => {
+                    let nextElement = header.nextElementSibling;
+                    let hasVisibleRow = false;
+                    while(nextElement && !nextElement.classList.contains('section-header')) {
+                        if (nextElement.style.display !== 'none') {
+                            hasVisibleRow = true;
+                            break;
+                        }
+                        nextElement = nextElement.nextElementSibling;
+                    }
+                    header.style.display = hasVisibleRow ? '' : 'none';
+                });
+            };
+            searchInput.addEventListener('keyup', filterTable);
+
+            openGlossaryButton.addEventListener('click', () => {
+                glossaryModal.classList.remove('hidden');
+                filterTable();
+            });
+
+            closeGlossaryButton.addEventListener('click', () => {
+                glossaryModal.classList.add('hidden');
+            });
+            
+            glossaryModal.addEventListener('click', (e) => {
+                if (e.target === glossaryModal) {
+                    glossaryModal.classList.add('hidden');
+                }
+            });
         });
     </script>
 </body>
 </html>
-
 
 
